@@ -4,16 +4,16 @@ spring:
     application:
         name: user-service
     datasource:
-        url: jdbc:postgresql://localhost:5432/user-test
-        username: postgres
-        password: root
-        driverClassName: org.postgresql.Driver
+        url: jdbc:mysql://127.0.0.1:3306/twitter-user?createDatabaseIfNotExist=true
+        username: root
+        password: 123456
+        driverClassName: com.mysql.cj.jdbc.Driver
     jpa:
         hibernate:
-            ddl-auto: none
+            ddl-auto: validate
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.PostgreSQLDialect
+                dialect: org.hibernate.dialect.MySQL8Dialect
     sql:
         init:
             mode: always

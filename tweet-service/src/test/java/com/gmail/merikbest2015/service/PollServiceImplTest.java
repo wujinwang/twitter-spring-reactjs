@@ -98,7 +98,7 @@ public class PollServiceImplTest extends AbstractAuthTest {
     @Test
     public void voteInPoll() {
         Poll poll = new Poll();
-        poll.setDateTime(LocalDateTime.now().plusMinutes(Integer.MAX_VALUE));
+        //poll.setDateTime(LocalDateTime.now().plusMinutes(Integer.MAX_VALUE));
         TweetProjection tweetProjection = TweetServiceTestHelper.createTweetProjection(false, TweetProjection.class);
         when(tweetRepository.getTweetByPollIdAndTweetId(TestConstants.TWEET_ID, TestConstants.POLL_ID)).thenReturn(Optional.of(tweet));
         when(pollRepository.getPollByPollChoiceId(TestConstants.POLL_ID, TestConstants.POLL_CHOICE_ID)).thenReturn(Optional.of(poll));
@@ -151,7 +151,7 @@ public class PollServiceImplTest extends AbstractAuthTest {
     @Test
     public void voteInPoll_ShouldPollIsNotAvailable() {
         Poll poll = new Poll();
-        poll.setDateTime(LocalDateTime.now());
+        //poll.setDateTime(LocalDateTime.now());
         when(tweetRepository.getTweetByPollIdAndTweetId(TestConstants.TWEET_ID, TestConstants.POLL_ID)).thenReturn(Optional.of(tweet));
         when(pollRepository.getPollByPollChoiceId(TestConstants.POLL_ID, TestConstants.POLL_CHOICE_ID)).thenReturn(Optional.of(poll));
         ApiRequestException exception = assertThrows(ApiRequestException.class,
@@ -163,7 +163,7 @@ public class PollServiceImplTest extends AbstractAuthTest {
     @Test
     public void voteInPoll_ShouldUserVotedInPoll() {
         Poll poll = new Poll();
-        poll.setDateTime(LocalDateTime.now().plusMinutes(Integer.MAX_VALUE));
+        //poll.setDateTime(LocalDateTime.now().plusMinutes(Integer.MAX_VALUE));
         when(tweetRepository.getTweetByPollIdAndTweetId(TestConstants.TWEET_ID, TestConstants.POLL_ID)).thenReturn(Optional.of(tweet));
         when(pollRepository.getPollByPollChoiceId(TestConstants.POLL_ID, TestConstants.POLL_CHOICE_ID)).thenReturn(Optional.of(poll));
         when(pollChoiceVotedRepository.ifUserVoted(TestConstants.USER_ID, TestConstants.POLL_CHOICE_ID)).thenReturn(true);

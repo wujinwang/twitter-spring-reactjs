@@ -4,22 +4,20 @@ spring:
     application:
         name: user-service
     datasource:
-        url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5432/user
-        username: postgres
-        password: root
-        driverClassName: org.postgresql.Driver
+        url: jdbc:mysql://127.0.0.1:3306/twitter-user?createDatabaseIfNotExist=true
+        username: root
+        password: 123456
+        driverClassName: com.mysql.cj.jdbc.Driver
     jpa:
         hibernate:
             ddl-auto: validate
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.PostgreSQLDialect
-    flyway:
-        locations: classpath:db/migration
+                dialect: org.hibernate.dialect.MySQL8Dialect
     zipkin:
-        base-url: http://${ZIPKIN_HOST:localhost}:9411
+        base-url: http://127.0.0.1:9411
     rabbitmq:
-        addresses: ${RABBITMQ_HOST:localhost}:5672
+        addresses: localhost:5672
     kafka:
         bootstrap-servers: localhost:9092
         consumer:
