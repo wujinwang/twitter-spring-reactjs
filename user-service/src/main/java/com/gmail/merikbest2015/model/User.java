@@ -91,22 +91,22 @@ public class User {
     @Column(name = "mentions_count", columnDefinition = "int8 default 0")
     private Long mentionsCount = 0L;
 
-    @Column(name = "active", columnDefinition = "boolean default false")
+    @Column(name = "active")
     private boolean active = false;
 
-    @Column(name = "profile_customized", columnDefinition = "boolean default false")
+    @Column(name = "profile_customized")
     private boolean profileCustomized = false;
 
-    @Column(name = "profile_started", columnDefinition = "boolean default false")
+    @Column(name = "profile_started")
     private boolean profileStarted = false;
 
-    @Column(name = "muted_direct_messages", columnDefinition = "boolean default false")
+    @Column(name = "muted_direct_messages")
     private boolean mutedDirectMessages = false;
 
-    @Column(name = "private_profile", columnDefinition = "boolean default false")
+    @Column(name = "private_profile")
     private boolean privateProfile = false;
 
-    @Column(name = "background_color", columnDefinition = "varchar(255) default 'DEFAULT'")
+    @Column(name = "background_color")
     @Enumerated(EnumType.STRING)
     private BackgroundColorType backgroundColor= BackgroundColorType.DEFAULT;
 
