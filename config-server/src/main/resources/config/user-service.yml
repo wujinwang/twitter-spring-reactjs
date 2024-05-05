@@ -4,7 +4,7 @@ spring:
     application:
         name: user-service
     datasource:
-        url: jdbc:mysql://${DATASOURCE_HOST:localhost}:3308/twitter-user?createDatabaseIfNotExist=true
+        url: jdbc:mysql://${DATASOURCE_HOST:localhost}:3306/twitter-user?createDatabaseIfNotExist=true
         username: root
         password: 123456
         driverClassName: com.mysql.cj.jdbc.Driver
