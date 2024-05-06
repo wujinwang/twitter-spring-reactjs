@@ -14,17 +14,23 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static com.gmail.merikbest2015.constants.ErrorMessage.*;
+import static com.gmail.merikbest2015.constants.PathConstants.AUTH_USER_ID_HEADER;
 
 @Component
 @RequiredArgsConstructor
 public class UserServiceHelper {
 
-    @Lazy
-    private final AuthenticationService authenticationService;
+   // @Lazy
+    //private final AuthenticationService authenticationService;
     private final UserRepository userRepository;
     private final FollowerUserRepository followerUserRepository;
     private final BlockUserRepository blockUserRepository;
@@ -36,9 +42,20 @@ public class UserServiceHelper {
         }
     }
 
+    public Long getAuthenticatedUserId() {
+        return getUserId();
+    }
+    
+    private Long getUserId() {
+        RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) attribs).getRequest();
+        return Long.parseLong(request.getHeader(AUTH_USER_ID_HEADER));
+    }
+
+    
     public void validateUserProfile(Long userId) {
         checkIsUserExist(userId);
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
 
         if (!userId.equals(authUserId)) {
             checkIsUserBlocked(userId);
@@ -71,7 +88,7 @@ public class UserServiceHelper {
     }
 
     public void checkIsUserBlocked(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
 
         if (blockUserRepository.isUserBlocked(userId, authUserId)) {
             throw new ApiRequestException(USER_PROFILE_BLOCKED, HttpStatus.BAD_REQUEST);
@@ -79,7 +96,7 @@ public class UserServiceHelper {
     }
 
     public void checkIsUserHavePrivateProfile(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
 
         if (!userRepository.isUserHavePrivateProfile(userId, authUserId)) {
             throw new ApiRequestException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -87,42 +104,42 @@ public class UserServiceHelper {
     }
 
     public boolean isUserFollowByOtherUser(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId =getAuthenticatedUserId();
         return followerUserRepository.isUserFollowByOtherUser(authUserId, userId);
     }
 
     public boolean isUserHavePrivateProfile(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return !userRepository.isUserHavePrivateProfile(userId, authUserId);
     }
 
     public boolean isUserBlockedByMyProfile(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return blockUserRepository.isUserBlocked(authUserId, userId);
     }
 
     public boolean isUserMutedByMyProfile(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return muteUserRepository.isUserMuted(authUserId, userId);
     }
 
     public boolean isMyProfileBlockedByUser(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return blockUserRepository.isUserBlocked(userId, authUserId);
     }
 
     public boolean isMyProfileWaitingForApprove(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return userRepository.isMyProfileWaitingForApprove(userId, authUserId);
     }
 
     public boolean isMyProfileSubscribed(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return userRepository.isMyProfileSubscribed(userId, authUserId);
     }
 
     public List<SameFollower> getSameFollowers(Long userId) {
-        Long authUserId = authenticationService.getAuthenticatedUserId();
+        Long authUserId = getAuthenticatedUserId();
         return followerUserRepository.getSameFollowers(userId, authUserId, SameFollower.class);
     }
 }
